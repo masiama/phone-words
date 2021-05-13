@@ -1,13 +1,28 @@
 import { Component } from 'react';
+import { throttle } from 'throttle-debounce';
 import './App.scss';
 import Key from './Key/Key';
 
 interface AppState {
   value: string;
+  results: string[];
 }
 
 class App extends Component<{}, AppState> {
-  state = { value: '' };
+  state = { value: '', results: [] };
+  updateResults = throttle(100, async value => {
+    const response = await fetch('/convert', {
+      method: 'post',
+      body: JSON.stringify({ value }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const { list, truncated } = await response.json();
+    const lastElemet = truncated ? ['List truncated'] : [];
+    this.setState({ results: [...list, ...lastElemet] });
+  });
 
   handleClick = (key?: string) => {
     let value = this.state.value;
@@ -18,6 +33,7 @@ class App extends Component<{}, AppState> {
     }
 
     this.setState({ value });
+    this.updateResults(value);
   };
 
   render() {
@@ -39,6 +55,11 @@ class App extends Component<{}, AppState> {
       <div className="app">
         <div className="app__output" data-testid="app-output">
           {this.state.value}
+        </div>
+        <div className="app__results">
+          {this.state.results.map(item => (
+            <div key={item}>{item}</div>
+          ))}
         </div>
         <div className="app__keyboard">
           {keys.map((key, i) => (
