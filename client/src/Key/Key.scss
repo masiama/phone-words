@@ -1,0 +1,24 @@
+.key {
+  text-align: center;
+  font-size: 3.2rem;
+  padding: 1rem 3rem;
+  user-select: none;
+
+  &:not(&--empty) {
+    cursor: pointer;
+
+    &:active {
+      background: #e6e6e6;
+    }
+  }
+
+  &__icon {
+    height: 20px;
+  }
+
+  &__sub {
+    font-size: 1.2rem;
+    color: grey;
+    text-transform: uppercase;
+  }
+}

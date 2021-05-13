@@ -1,0 +1,14 @@
+{
+  "name": "phonewords",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server/index.js",
+    "build": "cd client && npm install && npm run build",
+    "prettier": "prettier --write 'server/*' 'client/public' 'client/src'"
+  },
+  "author": "Leonid Cupikov",
+  "dependencies": {
+    "express": "^4.17.1",
+    "prettier": "^2.3.0"
+  }
+}
